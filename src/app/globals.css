@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /*
+   * ── Token permukaan & kedalaman (neumorphism) ───────────────────────────────
+   * Disamakan dengan bahasa desain portal-fe (kartu terangkat, field cekung,
+   * topbar/sidebar bershadow lembut) tapi aksen tetap teal milik MeeTrip.
+   * Semua token otomatis berganti nilai di dark mode lewat blok .dark di bawah,
+   * jadi komponen cukup memakai satu class (mis. shadow-neu) tanpa varian dark:.
+   */
+  :root {
+    /* Permukaan */
+    --surface-page: #e9eef5;
+    --surface-card: #ffffff;
+    --surface-raised: #f4f7fb;
+    --surface-sunken: #e3eaf2;
+    --surface-line: rgba(148, 163, 184, 0.35);
+
+    /* Kedalaman */
+    --neu-raised-sm: 2px 2px 5px rgba(148, 163, 184, 0.3), -2px -2px 5px rgba(255, 255, 255, 0.95);
+    --neu-raised: 5px 5px 12px rgba(148, 163, 184, 0.32), -4px -4px 10px rgba(255, 255, 255, 0.95);
+    --neu-raised-lg: 10px 10px 26px rgba(148, 163, 184, 0.4), -8px -8px 20px rgba(255, 255, 255, 1);
+    --neu-inset-sm: inset 1px 1px 3px rgba(148, 163, 184, 0.32), inset -1px -1px 3px rgba(255, 255, 255, 0.9);
+    --neu-inset: inset 3px 3px 6px rgba(148, 163, 184, 0.35), inset -3px -3px 6px rgba(255, 255, 255, 0.95);
+    --neu-inset-accent: inset 2px 2px 5px rgba(13, 148, 136, 0.2), inset -2px -2px 5px rgba(255, 255, 255, 0.85);
+    --neu-top: 0 8px 20px rgba(148, 163, 184, 0.35), inset 0 -1.5px 1.5px rgba(255, 255, 255, 0.95);
+    --neu-side: 8px 0 24px rgba(148, 163, 184, 0.28), inset -1.5px 0 1.5px rgba(255, 255, 255, 0.9);
+    --neu-pop: 8px 8px 28px rgba(148, 163, 184, 0.5), -6px -6px 20px rgba(255, 255, 255, 1);
+    --neu-modal: 0 28px 60px rgba(15, 23, 42, 0.22), 0 2px 8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --neu-accent-glow: 0 6px 16px rgba(13, 148, 136, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+
+  .dark {
+    /* Permukaan gelap: sedikit dinaikkan dari hitam agar shadow tetap terbaca */
+    --surface-page: #0a0e16;
+    --surface-card: #111823;
+    --surface-raised: #16202e;
+    --surface-sunken: #070b12;
+    --surface-line: rgba(255, 255, 255, 0.07);
+
+    --neu-raised-sm: 2px 2px 5px rgba(0, 0, 0, 0.5), -1px -1px 4px rgba(255, 255, 255, 0.025);
+    --neu-raised: 5px 5px 14px rgba(0, 0, 0, 0.55), -3px -3px 10px rgba(255, 255, 255, 0.03);
+    --neu-raised-lg: 10px 10px 30px rgba(0, 0, 0, 0.65), -6px -6px 18px rgba(255, 255, 255, 0.035);
+    --neu-inset-sm: inset 1px 1px 3px rgba(2, 6, 14, 0.8), inset -1px -1px 3px rgba(56, 72, 99, 0.22);
+    --neu-inset: inset 3px 3px 7px rgba(2, 6, 14, 0.85), inset -2px -2px 6px rgba(56, 72, 99, 0.28);
+    --neu-inset-accent: inset 2px 2px 6px rgba(0, 0, 0, 0.6), inset -1px -1px 4px rgba(45, 212, 191, 0.22);
+    --neu-top: 0 8px 26px rgba(2, 6, 14, 0.9), inset 0 -1.5px 1.5px rgba(255, 255, 255, 0.08);
+    --neu-side: 8px 0 26px rgba(2, 6, 14, 0.85), inset -1.5px 0 1.5px rgba(255, 255, 255, 0.06);
+    --neu-pop: 8px 8px 32px rgba(2, 6, 14, 0.95), -6px -6px 20px rgba(56, 72, 99, 0.32);
+    --neu-modal: 0 28px 60px rgba(0, 0, 0, 0.7), 0 2px 8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --neu-accent-glow: 0 6px 18px rgba(13, 148, 136, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    @apply text-slate-900 antialiased dark:text-slate-100;
+    background-color: var(--surface-page);
+  }
+}
+
+@layer components {
+  /* ── Panel / kartu terangkat ── */
+  .glass-panel {
+    @apply rounded-2xl border border-teal-500/25 bg-surface-card shadow-neu backdrop-blur-md dark:border-teal-500/35;
+  }
+
+  /* Kartu dengan kedalaman lebih tegas — untuk kartu utama/hero di dashboard */
+  .neu-card {
+    @apply rounded-2xl border border-teal-500/25 bg-surface-card shadow-neu-lg dark:border-teal-500/35;
+  }
+
+  /* Permukaan cekung — untuk area di dalam kartu (ringkasan, list, empty state) */
+  .neu-well {
+    @apply rounded-xl border border-teal-500/20 bg-surface-sunken shadow-neu-in dark:border-teal-500/30;
+  }
+
+  /* Elemen yang bisa ditekan: terangkat, lalu masuk saat :active */
+  .neu-pressable {
+    @apply shadow-neu-sm transition-[box-shadow,transform,background-color,border-color,color] duration-150 active:translate-y-px active:shadow-neu-in-sm;
+  }
+
+  /* ── Field input cekung ── */
+  .input-field {
+    @apply rounded-xl border border-teal-500/35 bg-white px-3.5 py-2.5 text-xs text-slate-800 shadow-neu-in-sm outline-none transition-all placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 dark:border-teal-500/45 dark:bg-[#111622] dark:text-slate-200 dark:placeholder:text-slate-500 dark:focus:border-teal-400 dark:focus:ring-teal-400/20;
+  }
+
+  /* ── Tombol ── */
+  .btn-primary {
+    @apply inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white shadow-neu-accent transition-all duration-150 hover:bg-teal-700 active:translate-y-px active:shadow-neu-in-sm disabled:cursor-not-allowed disabled:bg-teal-400 disabled:opacity-50 dark:bg-teal-500 dark:text-slate-950 dark:hover:bg-teal-600;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-teal-600/35 bg-surface-card px-4 py-2 text-sm font-semibold text-slate-700 shadow-neu-sm transition-all duration-150 hover:border-teal-500 hover:text-teal-600 active:translate-y-px active:shadow-neu-in-sm dark:border-teal-500/45 dark:text-slate-200 dark:hover:text-teal-400;
+  }
+
+  .section-title {
+    @apply text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400;
+  }
+
+  .table-scroll {
+    @apply overflow-x-auto;
+  }
+
+  .data-table {
+    @apply min-w-[760px];
+  }
+
+  /* Baris header tabel: sedikit cekung supaya badan tabel terasa lebih dalam */
+  .table-head-row {
+    @apply border-b border-slate-200/80 bg-surface-sunken shadow-neu-in-sm dark:border-white/[0.06];
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-slate-300 dark:bg-slate-700;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-600;
+}
+
+@keyframes toastProgress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.animate-toast-progress {
+  transform-origin: left center !important;
+  animation: toastProgress 4000ms linear forwards;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-slate-200 dark:bg-slate-800;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-300 dark:bg-slate-700;
+}
+
+@keyframes ssoLogoRattle {
+  0% { transform: translate3d(0, 0, 0) rotate(0) scale(1); }
+  18% { transform: translate3d(-3px, 1px, 0) rotate(-3deg) scale(1.06); }
+  36% { transform: translate3d(3px, -1px, 0) rotate(3deg) scale(1.09); }
+  54% { transform: translate3d(-2px, 0, 0) rotate(-2deg) scale(1.11); }
+  72% { transform: translate3d(2px, 0, 0) rotate(1.5deg) scale(1.11); }
+  100% { transform: translate3d(0, 0, 0) rotate(0) scale(1.08); }
+}
+
+.sso-app-logo img {
+  transform-origin: center;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.sso-app-logo > span {
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.sso-app-logo:hover img {
+  animation: ssoLogoRattle 440ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  transform: scale(1.08);
+}
+
+.sso-app-logo:hover > span {
+  opacity: 0.8;
+  transform: scale(1.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sso-app-logo:hover img {
+    animation: none;
+    transform: scale(1.06);
+  }
+}
+
+@media (max-height: 760px) {
+  .sso-gate-copy {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .sso-gate-copy .sso-app-logo {
+    margin-bottom: 1rem;
+  }
+
+  .sso-gate-copy .sso-app-logo img {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+
+  .sso-gate-intro h1 {
+    font-size: clamp(2.75rem, 8vh, 3.75rem);
+  }
+
+  .sso-gate-explanation {
+    margin-top: 0.75rem;
+    font-size: 0.925rem;
+    line-height: 1.5rem;
+  }
+
+  .sso-gate-copy button {
+    min-height: 48px;
+    margin-top: 1rem;
+  }
+
+  .sso-gate-guide {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .sso-gate-guide h2 {
+    font-size: 2rem;
+  }
+
+  .sso-gate-guide ol {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .sso-gate-guide li {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  .sso-gate-intro {
+    width: min(100%, 760px);
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) and (max-height: 700px) {
+  .sso-gate-intro {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .sso-gate-copy .sso-app-logo img {
+    width: 4.75rem;
+    height: 4.75rem;
+  }
+
+  .sso-gate-intro h1 {
+    font-size: clamp(2.35rem, 12vw, 3rem);
+  }
+
+  .sso-gate-explanation {
+    font-size: 0.85rem;
+    line-height: 1.3rem;
+  }
+
+  .sso-gate-footer {
+    padding-top: 0.65rem;
+    font-size: 0.7rem;
+  }
+}
